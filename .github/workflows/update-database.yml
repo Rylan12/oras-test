@@ -25,7 +25,7 @@ jobs:
 
       - name: Update database
         run: |
-          echo "Update" > executables.txt
+          echo "Update" >> executables.txt
 
       - name: Install oras for pushing to GitHub Packages
         run: brew install oras

@@ -22,7 +22,7 @@ jobs:
 
       - name: Update database
         run: |
-          echo "Update" >> executables.txt
+          echo "Updated on $(date)" >> executables.txt
 
       - name: Print catabase
         run: |
@@ -31,10 +31,11 @@ jobs:
       - name: Install oras for pushing to GitHub Packages
         run: brew install oras
 
+      - name: Log in to GitHub Packages
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io --username ${{ github.actor }} --password-stdin
+
       - name: Push to GitHub Packages
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" |
-            oras push --username ${{ github.actor }} --password-stdin \
-            --artifact-type application/vnd.homebrew.command-not-found.executables \
+          oras push --artifact-type application/vnd.homebrew.command-not-found.executables \
             ghcr.io/rylan12/command-not-found/executables:latest \
             executables.txt:text/plain

@@ -1,0 +1,39 @@
+name: Scheduled database updates
+on:
+  push:
+    paths:
+      - .github/workflows/update-database.yml
+  workflow_dispatch:
+
+jobs:
+  update-database:
+    runs-on: macos-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          ref: main
+          path: repo
+          persist-credentials: false
+
+      - name: Update database
+        run: |
+          echo "Update" > executables.txt
+
+      - name: Install oras for pushing to GitHub Packages
+        run: brew install oras
+
+      - name: Push to GitHub Packages
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" |
+            oras push --username ${{ github.actor }} --password-stdin \
+            --artifact-type application/vnd.homebrew.command-not-found.executables \
+            ghcr.io/rylan12/command-not-found/executables:latest \
+            executables.txt:text/plain

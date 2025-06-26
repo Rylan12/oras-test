@@ -40,8 +40,12 @@ jobs:
             ghcr.io/rylan12/command-not-found/executables:latest \
             executables.txt:text/plain
 
+  delete-old-versions:
+    needs: update-database
+    runs-on: ubuntu-latest
+    steps:
       - name: Delete old versions from GitHub Packages
-        uses: actions/delete-package-versions@v5
+        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55 # v5.0.0
         with:
           package-name: command-not-found/executables
           package-type: container

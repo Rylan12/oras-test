@@ -43,6 +43,8 @@ jobs:
   delete-old-versions:
     needs: update-database
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Delete old versions from GitHub Packages
         uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55 # v5.0.0
@@ -51,4 +53,3 @@ jobs:
           package-type: container
           min-versions-to-keep: 0
           delete-only-untagged-versions: true
-          token: ${{ secrets.DELETE_PACKAGES_TOKEN }}

@@ -51,3 +51,4 @@ jobs:
           package-type: container
           min-versions-to-keep: 0
           delete-only-untagged-versions: true
+          token: ${{ secrets.DELETE_PACKAGES_TOKEN }}

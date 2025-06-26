@@ -39,3 +39,11 @@ jobs:
           oras push --artifact-type application/vnd.homebrew.command-not-found.executables \
             ghcr.io/rylan12/command-not-found/executables:latest \
             executables.txt:text/plain
+
+      - name: Delete old versions from GitHub Packages
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: command-not-found/executables
+          package-type: container
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: true
